@@ -39,9 +39,8 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 
 const internetIdentityUrl = network === "local" ? `http://localhost:4943/?canisterId=${canisterEnvVariables["INTERNET_IDENTITY_CANISTER_ID"]}` : `https://identity.ic0.app`
 
-const frontendDirectory = "greet_frontend";
+const frontendDirectory = "artedge_frontend";
 
-//const frontend_entry = path.join("src", frontendDirectory, "src", "index.jsx");
 const frontend_entry = path.join("src", frontendDirectory, "src", "index.html");
 
 module.exports = {
@@ -79,8 +78,8 @@ module.exports = {
   // tutorial, uncomment the following lines:
   module: {
    rules: [
-     { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
-     { test: /\.css$/, use: ['style-loader','css-loader'] }
+    { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
+    { test: /\.css$/, use: ['style-loader','css-loader'] }
    ]
   },
   plugins: [

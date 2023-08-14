@@ -1,32 +1,54 @@
 {
   "canisters": {
-    "internet_identity": {
-    "type": "custom",
-    "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
-    "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz",
-    "remote": {
-      "id": {
-        "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
-      }
-    },
-    "frontend": {}
-    },
-    "greet_backend": {
-      "main": "src/greet_backend/main.mo",
+    "artedge_backend": {
+      "main": "src/artedge_backend/main.mo",
       "type": "motoko"
     },
-    "greet_frontend": {
+    "artedge_frontend": {
       "dependencies": [
-        "greet_backend"
+        "artedge_backend",
+        "internet_identity"
       ],
       "frontend": {
-        "entrypoint": "src/greet_frontend/src/index.html"
+        "entrypoint": "src/artedge_frontend/src/index.html"
       },
       "source": [
-        "src/greet_frontend/assets",
-        "dist/greet_frontend/"
+        "src/artedge_frontend/assets",
+        "dist/artedge_frontend/"
       ],
       "type": "assets"
+    },
+    "artedge_uploads": {
+      "frontend": {
+        "entrypoint": "build/index.html"
+      },
+      "source": [
+        "build"
+      ],
+      "type": "assets"
+    },
+    "internet_identity": {
+      "type": "custom",
+      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
+      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz",
+      "remote": {
+        "id": {
+          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
+        }
+      },
+      "frontend": {}
+    },
+    "pub": {
+      "type": "motoko",
+      "main": "src/pub/Main.mo"
+    },
+    "sub": {
+      "type": "motoko",
+      "main": "src/sub/Main.mo"
+    },
+    "dp7nft": {
+      "type": "motoko",
+      "main": "src/dp7nft/Main.mo"
     }
   },
   "defaults": {

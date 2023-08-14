@@ -1,7 +1,7 @@
 {
-  "name": "greet_frontend",
+  "name": "artedge_frontend",
   "version": "0.1.0",
-  "description": "Internet Computer starter application",
+  "description": "Art Edge for artists and collectors",
   "keywords": [
     "Internet Computer",
     "Motoko",
@@ -13,17 +13,16 @@
     "prebuild": "npm run generate",
     "start": "webpack serve --mode development --env development",
     "prestart": "npm run generate",
-    "generate": "dfx generate greet_backend"
+    "generate": "dfx generate artedge_backend"
   },
   "devDependencies": {
-    "@dfinity/agent": "0.15.6",
-    "@dfinity/auth-client": "^0.15.6",
-    "@dfinity/candid": "0.15.6",
-    "@dfinity/identity": "^0.15.6",
-    "@dfinity/principal": "0.15.6",
+    "@dfinity/agent": "0.18.1",
+    "@dfinity/candid": "0.18.1",
+    "@dfinity/principal": "0.18.1",
     "assert": "2.0.0",
     "buffer": "6.0.3",
     "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.8.1",
     "events": "3.3.0",
     "html-webpack-plugin": "5.5.0",
     "process": "0.11.10",
@@ -47,12 +46,20 @@
     "last 2 edge version"
   ],
   "dependencies": {
+    "@dfinity/assets": "^0.18.1",
+    "@dfinity/identity": "^0.18.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.3",
     "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.13.4",
+    "@mui/material": "^5.13.5",
+    "localforage": "^1.10.0",
+    "match-sorter": "^6.3.1",
     "react": "^18.2.0",
-    "react-router-dom": "^6.12.0"
+    "react-dom": "^18.2.0",
+    "react-masonry-css": "^1.0.16",
+    "react-router-dom": "^6.14.2",
+    "sort-by": "^1.2.0",
+    "sort-by-typescript": "^1.2.5"
   }
 }

@@ -1,0 +1,7 @@
+service : {
+  get: () -> (nat) query;
+  greet: () -> (text) query;
+  greet2: () -> (text) query;
+  inc: () -> ();
+  set: (nat) -> ();
+}
