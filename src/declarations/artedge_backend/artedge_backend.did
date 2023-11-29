@@ -8,6 +8,16 @@ type Profile =
    userPrincipal: principal;
    username: text;
  };
+type Image = 
+ record {
+   description: text;
+   image: text;
+   key: text;
+   likes: text;
+   pid: text;
+   tags: text;
+   title: text;
+ };
 service : {
   createCounter: () -> ();
   createProfile: (Profile) -> (text);
@@ -18,6 +28,8 @@ service : {
   greet: () -> (text) query;
   hasProfile: (principal) -> (text) query;
   listProfiles: () -> (text);
+  readImages: (text) -> (opt Image) query;
   readProfile: (text) -> (opt Profile) query;
+  saveBatchUpload: (Image) -> ();
   updateProfile: (text, Profile) -> ();
 }

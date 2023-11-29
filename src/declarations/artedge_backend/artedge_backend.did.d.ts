@@ -1,6 +1,15 @@
 import type { Principal } from '@dfinity/principal';
 import type { ActorMethod } from '@dfinity/agent';
 
+export interface Image {
+  'key' : string,
+  'pid' : string,
+  'title' : string,
+  'tags' : string,
+  'description' : string,
+  'likes' : string,
+  'image' : string,
+}
 export interface Profile {
   'username' : string,
   'alias' : string,
@@ -20,6 +29,8 @@ export interface _SERVICE {
   'greet' : ActorMethod<[], string>,
   'hasProfile' : ActorMethod<[Principal], string>,
   'listProfiles' : ActorMethod<[], string>,
+  'readImages' : ActorMethod<[string], [] | [Image]>,
   'readProfile' : ActorMethod<[string], [] | [Profile]>,
+  'saveBatchUpload' : ActorMethod<[Image], undefined>,
   'updateProfile' : ActorMethod<[string, Profile], undefined>,
 }
