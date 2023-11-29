@@ -79,11 +79,12 @@ actor {
       principalProfiles.put(stringId, profile.userPrincipal);
       
       //this worked here but needs cycles to create each cansiter
-      // let myCounter = "C" # stringId;
+      let myCounter = "C" # stringId;
+      // Cycles.add(15_000_000_000);
       // let myCounter = await Counter.Counter(1);
-      // let myUpload = "U" # stringId;
+      let myUpload = "U" # stringId;
+      // Cycles.add(15_000_000_000);
       // let  myUpload = await Upload.Upload(1);
-      //4 return confirmations
       (stringId);
     };
 
