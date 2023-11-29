@@ -1,0 +1,29 @@
+{
+  "canisters": {
+    "artedge_backend": {
+      "main": "src/artedge_backend/main.mo",
+      "type": "motoko"
+    },
+    "artedge_frontend": {
+      "dependencies": [
+        "artedge_backend"
+      ],
+      "frontend": {
+        "entrypoint": "src/artedge_frontend/src/index.html"
+      },
+      "source": [
+        "src/artedge_frontend/assets",
+        "dist/artedge_frontend/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
