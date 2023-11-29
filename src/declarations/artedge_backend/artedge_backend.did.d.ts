@@ -1,10 +1,25 @@
 import type { Principal } from '@dfinity/principal';
 import type { ActorMethod } from '@dfinity/agent';
 
+export interface Profile {
+  'username' : string,
+  'alias' : string,
+  'interests' : string,
+  'email' : string,
+  'genre' : string,
+  'userPrincipal' : Principal,
+  'artState' : string,
+}
 export interface _SERVICE {
-  'get' : ActorMethod<[], bigint>,
+  'createCounter' : ActorMethod<[], undefined>,
+  'createProfile' : ActorMethod<[Profile], string>,
+  'createUpload' : ActorMethod<[], undefined>,
+  'deleteProPrinc' : ActorMethod<[string], undefined>,
+  'deleteProfile' : ActorMethod<[string], [] | [Profile]>,
+  'getCaller' : ActorMethod<[], string>,
   'greet' : ActorMethod<[], string>,
-  'greet2' : ActorMethod<[], string>,
-  'inc' : ActorMethod<[], undefined>,
-  'set' : ActorMethod<[bigint], undefined>,
+  'hasProfile' : ActorMethod<[Principal], string>,
+  'listProfiles' : ActorMethod<[], string>,
+  'readProfile' : ActorMethod<[string], [] | [Profile]>,
+  'updateProfile' : ActorMethod<[string, Profile], undefined>,
 }

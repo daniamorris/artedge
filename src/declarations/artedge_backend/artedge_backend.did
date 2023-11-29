@@ -1,7 +1,23 @@
+type Profile = 
+ record {
+   alias: text;
+   artState: text;
+   email: text;
+   genre: text;
+   interests: text;
+   userPrincipal: principal;
+   username: text;
+ };
 service : {
-  get: () -> (nat) query;
+  createCounter: () -> ();
+  createProfile: (Profile) -> (text);
+  createUpload: () -> ();
+  deleteProPrinc: (text) -> ();
+  deleteProfile: (text) -> (opt Profile);
+  getCaller: () -> (text) query;
   greet: () -> (text) query;
-  greet2: () -> (text) query;
-  inc: () -> ();
-  set: (nat) -> ();
+  hasProfile: (principal) -> (text) query;
+  listProfiles: () -> (text);
+  readProfile: (text) -> (opt Profile) query;
+  updateProfile: (text, Profile) -> ();
 }
