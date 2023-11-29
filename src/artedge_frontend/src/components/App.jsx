@@ -115,7 +115,7 @@ function App() {
       {/* <Button onClick={whoDat} variant="contained">knock knock who's there?</Button> */}
       <h1>{message}</h1>
       {/* <Profile id = {userId}/> */}
-      <Uploads myid={myIdentity} id = {userId}/>
+      {/* <Uploads myid={myIdentity} id = {userId}/> */}
       {/* <Route path="/"><PublicProfile id = {userId}/></Route> */}
         <Route path="/"><Art input={inputText} /></Route>
         <Route path="/Art"><Art input={inputText} /></Route>
