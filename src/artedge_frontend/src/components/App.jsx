@@ -9,7 +9,8 @@ import Footer from "./Footer";
 import Profile from "./Profile";
 import {createActor, artedge_backend} from "../../../declarations/artedge_backend";
 import {AuthClient} from "@dfinity/auth-client"
-import {HttpAgent} from "@dfinity/agent";                           
+import {HttpAgent} from "@dfinity/agent";  
+import Album from "./Album";                         
 
 
 const defaultTheme = createTheme({
@@ -95,6 +96,7 @@ function App() {
         <Route path="/Support"><Support login = {doLog} status = {loggedin}/></Route>
         <Route path="/Master"><Master /></Route>
         <Route path="/Profile"><Profile id = {userId}/></Route>
+        <Route path="/Gallery"><Album id = {userId}/></Route>
       <Footer />
     </ThemeProvider>
   );
