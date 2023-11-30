@@ -80,7 +80,7 @@ function App() {
 
     const greeting = await actor.getCaller();
     setUserId(greeting); //logged in principal with async call to backend
-    console.log(greeting);
+    // console.log(greeting);
     setloggedin(true);
 
     return false;
