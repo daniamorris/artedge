@@ -8,21 +8,22 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Privacy from './Privacy';
 import Terms from './Terms';
+import Contact from './Contact';
 
 function Copyright() {
   return (
     <Typography color="text.secondary">
       {'Copyright © '}
-      <Link color="inherit" href="https://daniad.com/">
-        Artedge
-      </Link>{' '}
+      {/* <Link color="inherit" href="https://daniad.com/"> */}
+        Artedge {' '}
+      {/* </Link>{' '} */}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
   );
 }
 
-function Contact() {
+function Contactbk() {
   return (
     <Typography color="text.secondary">
       <Button color="secondary" href="https://daniad.com/">Contact</Button>

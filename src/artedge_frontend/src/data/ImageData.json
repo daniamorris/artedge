@@ -3,72 +3,147 @@
     "key": "1",
     "pid": "1",
     "img": "squares5.jpg",
-    "title": "Mountins"
+    "title": "Mountins",
+    "desc": "A sunset view of Saddleback Butte with a Joshua tree in the foreground."
   },
   {
     "key": "2",
     "pid": "1",
     "img": "squares6.jpg",
-    "title": "Clouds"
+    "title": "Clouds",
+    "desc": "The edge of a storm as it approaches."
   },
   {
     "key": "3",
     "pid": "1",
     "img": "squares8.jpg",
-    "title": "Sunset"
+    "title": "Sunset",
+    "desc": "A colorful sunset with a silhouette of the outhouse and a Joshua tree."
   },
   {
     "key": "4",
     "pid": "1",
     "img": "squares1.jpg",
-    "title": "Mountins"
+    "title": "Kitty in the Window",
+    "desc": "The little black cat is always trying to get in the window."
   },
   {
     "key": "5",
     "pid": "1",
     "img": "squares2.jpg",
-    "title": "Clouds"
+    "title": "Earth Mandala",
+    "desc": "A desert land mandala with hills in the background and blue sky."
   },
   {
     "key": "6",
     "pid": "1",
     "img": "squares3.jpg",
-    "title": "Artshack"
+    "title": "Candlebars Handleabra Artshack",
+    "desc": "Candlelight in front of one of three pieces in the Arte shack."
   },
   {
     "key": "7",
     "pid": "1",
     "img": "squares4.jpg",
-    "title": "Mountins"
+    "title": "Sunset",
+    "desc": "A very orange Sunset with a Josua Tree."
   },
   {
     "key": "8",
     "pid": "1",
     "img": "squares7.jpg",
-    "title": "Clouds"
+    "title": "Jetski",
+    "desc": "A JetSki and a dried up desert lake with snowcapped mountains in the far back."
   },
   {
     "key": "9",
     "pid": "1",
-    "img": "squares5.jpg",
-    "title": "Sunset"
+    "img": "squares18.jpg",
+    "title": "Nights Poofer and Bridge",
+    "desc": "The tail end of a sunset with a silhouette of a metal bridge and a boy on a car."
   },
   {
     "key": "10",
     "pid": "1",
-    "img": "squares5.jpg",
-    "title": "Mountins"
+    "img": "squares19.jpg",
+    "title": "Night Blurs Carhenge",
+    "desc": "Carhenge at night a crazy metal sculpture of cars and bikes and McDonald's flag."
   },
   {
     "key": "11",
     "pid": "1",
-    "img": "squares6.jpg",
-    "title": "Clouds"
+    "img": "squares20.jpg",
+    "title": "Window with a view",
+    "desc": "A small white window with a view to Saddleback Butte."
   },
   {
     "key": "12",
     "pid": "1",
-    "img": "squares8.jpg",
-    "title": "Sunset"
+    "img": "squares21.jpg",
+    "title": "Window with a Smile",
+    "desc": "A wooden art shack with a window and a face behind it."
+  },
+  {
+    "key": "13",
+    "pid": "1",
+    "img": "squares9.jpg",
+    "title": "Bridge",
+    "desc": "A sunset silhouette of a bridge at the Salton Sea."
+  },
+  {
+    "key": "14",
+    "pid": "1",
+    "img": "squares10.jpg",
+    "title": "Inspired by California.com",
+    "desc": "People gathering on top of a bus with inspired by California.com printed on it."
+  },
+  {
+    "key": "15",
+    "pid": "1",
+    "img": "squares11.jpg",
+    "title": "The Nashville Brothers",
+    "desc": "A silhouette of two people playing guitar at sunset."
+  },
+  {
+    "key": "16",
+    "pid": "1",
+    "img": "squares12.jpg",
+    "title": "Carhenge",
+    "desc": "A weird metal car sculpture in the desert."
+  },
+  {
+    "key": "17",
+    "pid": "1",
+    "img": "squares13.jpg",
+    "title": "Fire Tree",
+    "desc": "Two femmes putting lights on a metal sculpture."
+  },
+  {
+    "key": "18",
+    "pid": "1",
+    "img": "squares14.jpg",
+    "title": "Neon S",
+    "desc": "A blue neon sign with an S and a purple neon piece."
+  },
+  {
+    "key": "19",
+    "pid": "1",
+    "img": "squares15.jpg",
+    "title": "Tiny Triangle Houses",
+    "desc": "Handmade housing with a beautiful sunset in the back."
+  },
+  {
+    "key": "20",
+    "pid": "1",
+    "img": "squares16.jpg",
+    "title": "Carhenge",
+    "desc": "Another view of the sculpture known as Carhenge."
+  },
+  {
+    "key": "21",
+    "pid": "1",
+    "img": "squares17.jpg",
+    "title": "Squirrel Scouts",
+    "desc": "A close-up of a bicycle wheel with a squirrel on Carhenge."
   }
 ]

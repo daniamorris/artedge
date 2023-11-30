@@ -16,6 +16,7 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import GalleryCard from './GalleryCard';
+// import data from "../data/ImageData.json"
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -25,6 +26,7 @@ const galleryInfo = {
     "Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.",
 };
 
+// const featuredImages = data;
 const featuredImages = [
   {
     title: 'My Image is great',

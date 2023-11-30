@@ -23,12 +23,11 @@ export default function TrainingModule() {
           <Typography variant="h5" sx={{ width: '33%', flexShrink: 0 }}>
             Step 1.
           </Typography>
-          <Typography sx={{ color: 'text.primary' }}>I am an accordion</Typography>
+          <Typography sx={{ color: 'text.primary' }}>Read the 1000 True Fans article</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography color="text.secondary">
-            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-            Aliquam eget maximus est, id dignissim quam.
+          As you read the article jot down any ideas that stand our. List any actions you might take as a result of reading the article. What do you think of the concepts presented? Do you think it's possible to connect with 1000 true fans over time? Pick a number that seems reasonable to start with. Right on a piece of paper - I so excited to find my number of true fans, I'm starting today. Post your paper in a place that you'll see frequently. (fridge or bathroom mirror) Next head over to the discord and share your thoughts, notes and if you enjoyed completing chapter one.
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -40,14 +39,12 @@ export default function TrainingModule() {
         >
           <Typography variant="h5" sx={{ width: '33%', flexShrink: 0 }}>Step 2.</Typography>
           <Typography sx={{ color: 'text.secondary' }}>
-            You are currently not an owner
+            Create a list of actions
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus,
-            varius pulvinar diam eros in elit. Pellentesque convallis laoreet
-            laoreet.
+            Review your notes from Part 1. Did you list any actions to take? Create a list now, starting with 10 things you can do to find or connect to your true fans. Here's 3 examples to get you started:  1. share a post on social media about your art process. 2. make a list of people who have expressed interest in your work. 3. describe your perfect fan: what do they look like? Why do they enjoy your art? How did they find your art? Once you've completed you list rewrite it in order of easiest to hardest to complete. Do the first thing on your list today.
           </Typography>
         </AccordionDetails>
       </Accordion>

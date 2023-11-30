@@ -31,11 +31,11 @@ export default function ImageFeed(props) {
   }
 
   function handleClicked(e){
-    const {name, title, id, src, alt,loading} = e.target;
-    setMyModal(<BasicModal key={id} title={title} image={src} open={handleOpen} onClose={shutit}/>);
-    // const data = e.currentTarget;
+    const {name, title, id, src, alt,loading, desc} = e.target;
+    setMyModal(<BasicModal key={id} title={title} image={src} desc={alt} open={handleOpen} onClose={shutit}/>);
+    // const {desc} = e.currentTarget;
     // const mykey = e.target;
-    // console.log(data);
+    console.log(alt);
     // console.log(mykey);
     // console.log(name);
     // console.log(title);
@@ -62,7 +62,7 @@ export default function ImageFeed(props) {
           <img
             srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
             src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-            alt={item.title}
+            alt={item.desc}
             loading="lazy"
             name={item.img}
             title={item.title}
