@@ -7,6 +7,9 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import BasicModal from "./BasicModal";
 import { render } from "react-dom";
+import {createActor, artedge_backend} from "../../../declarations/artedge_backend";
+
+let actor = artedge_backend;
 
 const style = {
   position: 'absolute',
@@ -36,6 +39,7 @@ export default function ImageFeed(props) {
     // const {desc} = e.currentTarget;
     // const mykey = e.target;
     console.log(alt);
+    addPs();
     // console.log(mykey);
     // console.log(name);
     // console.log(title);
@@ -44,6 +48,10 @@ export default function ImageFeed(props) {
     // console.log(alt);
     // console.log(loading);
   }
+
+  async function addPs(){
+    let uppoints = await actor.inc();
+  };
 
     const filteredData = data.filter((el) => {
       if (props.input === '') {

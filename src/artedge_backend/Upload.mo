@@ -1,6 +1,7 @@
 import Nat "mo:base/Nat";
 
     //included class that gets created with profile for images
+    //or when they select create a gallery option
     //creates an asset canister for uploads for each identity
     //private uploads and editing public viewing of images
 

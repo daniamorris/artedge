@@ -13,9 +13,19 @@ module {
       artState: Text;
       interests: Text;
     };
+
+    public type Elist = {
+      name: Text;
+      email: Text;
+    };
+    
+    public type Pcount = {
+      userPrincipal: Principal;
+      points: Text;
+    };
     
     public type Image = {
-      key: Text;
+      imid: Text;
       pid: Text;
       image: Text;
       title: Text;
@@ -27,6 +37,19 @@ module {
     public type ImageFeed = {
       key: Text;
       images: Image;
+    };
+
+    public type FileBatch = {
+      key: Text;
+      fileName: Text;
+      width: Text;
+      height: Text;
+    };
+
+    public type BatchUpload = {
+      upid: Text;
+      pid: Text;
+      batch: FileBatch;
     };
 
     public type Gallery = {
@@ -41,13 +64,29 @@ module {
 
     public type Account = {
       userPrincipal: Principal;
-      social: Text;
+      contact: Text;
+      commissions: Text;
       payments: Text;
-      nfts: Text;
-      wallet: Text;
       points: Text;
-      payouts: Text;
-      transactions: Text;
+      // nfts: Text;
+      // wallet: Text;
+      // payouts: Text;
+      // transactions: Text;
+      // social: Text;
+    };
+    
+    public type User = {
+      userPrincipal: Principal;
+      profile: Text;
+      profileLikes: Text;
+      images: Text;
+      imageLikes: Text;
+      galleries: Text;
+      gallerieLikes: Text;
+      favorites: Text;
+      points: Text;
+      settings: Text;
+      trainings: Text;
     };
     
 };

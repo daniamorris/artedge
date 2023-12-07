@@ -31,7 +31,10 @@ export default function Master(props) {
             {/* <Collapse in={expanded} timeout="auto" unmountOnExit> */}
             <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-                Training Coming Soon...
+                1000 True Fans
+            </Typography>
+            <Typography gutterBottom variant="h5" component="div">
+                Making a living doing what you Love
             </Typography>
             <Typography variant="body2" color="text.secondary">
             "To be a successful creator you don’t need millions. You don’t need millions of dollars or millions of customers, millions of clients or millions of fans. To make a living as a craftsperson, photographer, musician, designer, author, animator, app maker, entrepreneur, or inventor you need only thousands of true fans." - Kevin Kelley
@@ -40,7 +43,7 @@ export default function Master(props) {
             {/* </Collapse> */}
         {/* </CardActionArea> */}
         </Card>
-        {/* <TrainingModule /> */}
+        <TrainingModule id = {props.id} proid={props.proid} points={props.points} mycounter={props.mycounter}/>
         <Box mt={6} />
     </Container>
   );

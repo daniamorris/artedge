@@ -7,7 +7,7 @@ shared(msg) actor class Counter(init : Nat) {
   var count = init;
 
   public shared(msg) func inc() : async () {
-    assert (owner == msg.caller);
+    // assert (owner == msg.caller);
     count += 1;
   };
 
@@ -16,7 +16,7 @@ shared(msg) actor class Counter(init : Nat) {
   };
 
   public shared(msg) func bump() : async Nat {
-    assert (owner == msg.caller);
+    // assert (owner == msg.caller);
     count := 1;
     count;
   };

@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import IconButton from '@mui/material/IconButton';
+import { Link } from '@mui/material';
 // import Avatar from '@mui/material/Avatar';
 // import { red } from '@mui/material/colors';
 
@@ -29,7 +30,24 @@ export default function ImageDetail(props) {
       </CardContent>
       <CardActions>
         {/* <Button size="small">Support</Button> */}
-        <Button size="small">Profile</Button>
+        <Button size="small" href='#'>Profile</Button>
+        {/* <Typography
+            variant="h6"
+            noWrap
+            component={Link}
+            href="/PublicProfile"
+            sx={{
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              // letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            Profile
+          </Typography> */}
           {/* <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
             A
           </Avatar> */}

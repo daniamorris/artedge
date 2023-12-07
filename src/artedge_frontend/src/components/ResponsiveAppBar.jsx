@@ -59,6 +59,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const pages = ['Art', 'Support', 'Master'];
+// const pages = ['Art', 'Support', 'Master', 'PublicProfile','ImageTest', 'Uploads'];
 const settings = ['Profile', 'Gallery', 'Account'];
 
 function ResponsiveAppBar(props) {
@@ -90,8 +91,6 @@ function ResponsiveAppBar(props) {
     console.log("searching"+ searchData);
   }
 
-
-
   //returns login button or settings menu based on loginStatus
   function loginBar () {
     let mystatus = props.loginStatus;
@@ -101,7 +100,7 @@ function ResponsiveAppBar(props) {
         <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Open settings">
           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+            <Avatar alt="Settings" src="squares14.jpg" />
           </IconButton>
         </Tooltip>
         <Menu

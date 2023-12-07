@@ -1,28 +1,18 @@
-import React, { useEffect, useState } from "react";
-import Avatar from '@mui/material/Avatar';
+import React, { useState } from "react";
+import {artedge_backend } from "../../../declarations/artedge_backend";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import InterestsIcon from '@mui/icons-material/Interests';
-import BadgeAvatars from './BadgeAvatars';
-import {createActor, artedge_backend } from "../../../declarations/artedge_backend";
 import { Principal } from "@dfinity/principal";
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
+import StarRateIcon from '@mui/icons-material/StarRate';
 
-// TODO add authentication and the rest of profile data
-// decide on avatar, refine the back-end, pre-populate Completed fields
-// prevent ability to create multiple profiles for the same internet identity
-// check the principal id during the create process or on login and only show the create form if they dont have
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -32,18 +22,13 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function Profile(props) {
-
+  // let points = props.points;
   let actor = artedge_backend;
   let principal = Principal.fromText(props.id);
   const cp = "Create";
   const up = "Update";
-
-  // console.log(props.id);
-  // console.log(principal);
-
   const [profile, setProfile] = useState({
     userPrincipal: principal,
-    // avatar: Blob;
     email: "",
     username: "",
     alias: "",
@@ -51,8 +36,19 @@ export default function Profile(props) {
     artState: "",
     interests: ""
 });
-  const [profileId, setProfileId] = useState("");
-  const [hasProfile, setHasProfile] = useState(false);
+  const [profileId, setProfileId] = useState(props.proid);
+  const [hasProfile, setHasProfile] = useState(props.registered);
+  const [currentPoints, setCurrentPoints] = useState(props.points);
+  const showpoints = " You have " + currentPoints + " points!";
+
+
+  if (!profileId ==""){
+    displayMyProfile(profileId);
+  }
+
+  if (currentPoints){
+    displayMyProfile(profileId);
+  }
 
   const handleCreate = (event) => {
     event.preventDefault();
@@ -75,7 +71,7 @@ export default function Profile(props) {
       artState: data.get('artState'),
       interests: data.get('interests')
     });
-  };
+  }
 
   const handleUpdate = (event) => {
     event.preventDefault();
@@ -98,34 +94,47 @@ export default function Profile(props) {
       artState: data.get('artState'),
       interests: data.get('interests')
     });
-  };
+  }
 
   const handleShow = (event) => {
     event.preventDefault();
-    // const {name, value} = event.target;
-    // console.log("here now"+ {[name]:value} );
-    displayMyProfile("0"); //stringId //profileId
-  };
+    displayMyProfile(profileId);
+  }
 
   const handleDelete = (event) => {
     event.preventDefault();
     deleteMyProfile(profileId);
-  };
+  }
+
+  function hide() {
+    var x = document.getElementById("hhide");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  } 
 
   async function createMyProfile(profile) {
     let profileId = await actor.createProfile(profile);
     setProfileId(profileId);
     setHasProfile(true);
-    // console.log("this is my profile id: " + profileId);
     displayMyProfile(profileId);
   }
 
   async function updateMyProfile(stringId, profile) {
+    document.getElementById("hhide").innerText = "update in progress";
     let profileUpdated = await actor.updateProfile(stringId, profile);
+    let nowPoints = await actor.readPoints(parseInt(stringId));
+    setCurrentPoints(nowPoints);
+    displayMyProfile(profileId);
+    hide();
   }  
 
   async function displayMyProfile(stringId) {
     const profileDisplayed = await actor.readProfile(stringId);
+    let nowPoints = await actor.readPoints(parseInt(stringId));
+    setCurrentPoints(nowPoints);
     const {0: {username},0: {email}, 0:{alias}, 0:{genre}, 0:{artState}, 0:{interests}, 0:{userPrincipal}} = profileDisplayed;
     document.getElementById("username").value = username;
     document.getElementById("email").value = email;
@@ -133,6 +142,7 @@ export default function Profile(props) {
     document.getElementById("genre").value = genre;
     document.getElementById("interests").value = interests;
     document.getElementById("artState").value = artState;
+    setHasProfile(true);
   }  
 
   async function deleteMyProfile(stringId) {
@@ -159,7 +169,6 @@ export default function Profile(props) {
 return (
       <Container component="main" maxWidth="xs" sx={{backgroundColor: 'primary.light', borderRadius: 1.5, opacity: 0.7, marginBottom: 4}}>
         <CssBaseline />
-        <h1>{profile.username}</h1>
         <Box
           sx={{
             marginTop: 8,
@@ -168,13 +177,11 @@ return (
             alignItems: 'center',
           }}
         >
-          {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <InterestsIcon />
-            <BadgeAvatars />
-          </Avatar> */}
           <Typography component="h1" variant="h5" sx={{ mt: 3}}>
             {hasProfile ? up : cp} Profile
           </Typography>
+          <div id="hhide"></div>
+          <Item id="mypoints"><StarRateIcon color="primary" />  {currentPoints && showpoints}</Item>
           <Box component="form" noValidate onSubmit={hasProfile ? handleUpdate : handleCreate} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -185,6 +192,9 @@ return (
                   id="username"
                   label="Username"
                   autoFocus
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 ></TextField>
               </Grid>
               <Grid item xs={12}>
@@ -194,6 +204,9 @@ return (
                   id="email"
                   label="Email Address"
                   autoComplete="email"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 ></TextField>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -204,6 +217,9 @@ return (
                   id="alias"
                   label="alias AKA"
                   autoFocus
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 ></TextField>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -213,6 +229,9 @@ return (
                   label="Genre of Art"
                   name="genre"
                   autoComplete="genre"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 ></TextField>
               </Grid>
               <Grid item xs={12}>
@@ -222,6 +241,9 @@ return (
                   label="Interests #Hastags"
                   name="interests"
                   autoComplete="interests"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 ></TextField>
               </Grid>
               <Grid item xs={12}>
@@ -233,6 +255,9 @@ return (
                   autoComplete="artState"
                   multiline
                   rows={4}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 ></TextField>
               </Grid>
             </Grid>
@@ -251,6 +276,7 @@ return (
               </Stack>
             }
           </Box>
+          <Box sx={{ height: 10}}></Box>
         </Box>
       </Container>
   );
