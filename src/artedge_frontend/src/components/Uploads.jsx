@@ -14,7 +14,6 @@ let actor = artedge_backend;
 // create an asset canister for the profile principal to upload to 
 // Hardcoded principal: 535yc-uxytb-gfk7h-tny7p-vjkoe-i4krp-3qmcl-uqfgr-cpgej-yqtjq-rqe
 // Should be replaced with authentication method e.g. Internet Identity when deployed on IC
-let ddm = "hcwzc-nsfu5-fknaq-q2y75-g5x3b-gaphq-y5gz7-5ulkc-rkiw3-5khv7-tqe";
 // const identity = authClient.getIdentity();
 
 const identity = Ed25519KeyIdentity.generate(new Uint8Array(Array.from({length: 32}).fill(0)));
@@ -69,25 +68,25 @@ const Uploads = (props) => {
         pid: "",
         batch: {0: {}}
         
-      });
+    });
 
-      const handleSave = (event) => {
-        event.preventDefault();
-        const data = event.currentTarget;
-        setMyBatch ({
-          upid: data.id,
-          pid: data.name,
-          batch: {0: {uploads}}
-        });
-        // key, fileName, width, height (upload data)
-        saveIt({
-            upid: data.id,
-            pid: data.name,
-            batch: {0: {uploads}}
-        });
-        console.log("saved a Batch" + data.name);
-        // saveIt(myBatch);
-      };
+    const handleSave = (event) => {
+    event.preventDefault();
+    const data = event.currentTarget;
+    setMyBatch ({
+        upid: data.id,
+        pid: data.name,
+        batch: {0: {uploads}}
+    });
+    // key, fileName, width, height (upload data)
+    saveIt({
+        upid: data.id,
+        pid: data.name,
+        batch: {0: {uploads}}
+    });
+    console.log("saved a Batch" + data.name);
+    // saveIt(myBatch);
+    };
       
       const handleList = (event) => {
         event.preventDefault();
