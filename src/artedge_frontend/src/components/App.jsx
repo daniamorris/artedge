@@ -150,7 +150,8 @@ function App() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Header login = {doLog} loginStatus = {loggedin} logout = {logMeOut} input={inputText} shandle={inputHandler}/>
-        <Route path="/"><SignInSide /></Route>
+        <Uploads id = {userId} registered={hasProfile} proid={profId}/>
+        {/* <Route path="/"><SignInSide /></Route> */}
         <Route path="/Art"><Art input={inputText} readps={handleRead} adps={handleInc}/></Route>
         <Route path="/Support"><Support login = {doLog} status = {loggedin}/></Route>
         <Route path="/Master"><Master id = {userId} adps={handleInc} proid={profId} points={points}/></Route>

@@ -10,17 +10,17 @@ import {createActor, artedge_backend} from "../../../declarations/artedge_backen
 
 let actor = artedge_backend;
 
+//pass the agent from login to create the AssetManager and eleminate hardcoded principal
 // https://agent-js.icp.xyz/assets/index.html for @dfinity/assets info includs get and delete
 // create an asset canister for the profile principal to upload to 
+
 // Hardcoded principal: 535yc-uxytb-gfk7h-tny7p-vjkoe-i4krp-3qmcl-uqfgr-cpgej-yqtjq-rqe
 // Should be replaced with authentication method e.g. Internet Identity when deployed on IC
-// const identity = authClient.getIdentity();
 
 const identity = Ed25519KeyIdentity.generate(new Uint8Array(Array.from({length: 32}).fill(0)));
-// const identity = Ed25519KeyIdentity.generate(new Uint8Array(Array.from({length: 32}).fill(0)));
-const isLocal = !window.location.host.endsWith('ic0.app');
+const isLocal = !window.location.host.endsWith('icp0.io');
 const agent = new HttpAgent({
-    host: isLocal ? `http://127.0.0.1:${window.location.port}` : 'https://ic0.app', identity,
+    host: isLocal ? `http://127.0.0.1:${window.location.port}` : 'https://icp0.io', identity,
 });
 if (isLocal) {
     agent.fetchRootKey();
@@ -28,6 +28,7 @@ if (isLocal) {
 
 // // Canister id can be fetched from URL since frontend in this example is hosted in the same canister as file upload
 // const canisterId = new URLSearchParams(window.location.search).get('canisterId') ?? /(.*?)(?:\.raw)?\.ic0.app/.exec(window.location.host)?.[1] ?? /(.*)\.localhost/.exec(window.location.host)?.[1];
+
 //will need to get the canisterId of the user's asset cansiter (let myUpload = "U" # stringId;)
 const canisterId = process.env.ARTEDGE_FRONTEND_CANISTER_ID;
 
@@ -84,11 +85,11 @@ const Uploads = (props) => {
         pid: data.name,
         batch: {0: {uploads}}
     });
-    console.log("saved a Batch" + data.name);
+    console.log("saved a Batch " + data.name);
     // saveIt(myBatch);
     };
       
-      const handleList = (event) => {
+    const handleList = (event) => {
         event.preventDefault();
         const data = event.currentTarget;
         // setMyBatch ({
@@ -126,6 +127,7 @@ const Uploads = (props) => {
     };
 
     async function listFiles(){
+        //this all works just fine
         const files = await assetManager.list();
         console.log(files);
         const asset = await assetManager.get('/uploads/squares1.500.500.jpg');
@@ -160,7 +162,7 @@ const Uploads = (props) => {
                 }));
                 await batch.commit({onProgress: ({current, total}) => setProgress(current / total)});
                 setUploads(prevState => [...items, ...prevState]);
-                console.log("I am here with uploads" + uploads);
+                // console.log("I am here with uploads " + uploads);
             } catch (e) {
                 if (e.message.includes('Caller is not authorized')) {
                     alert("Caller is not authorized, follow Authorization instructions in README");
