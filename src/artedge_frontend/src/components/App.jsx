@@ -13,7 +13,6 @@ import {HttpAgent} from "@dfinity/agent";
 import Album from "./Album";                         
 import { Principal } from "@dfinity/principal";
 import Account from "./Account";
-import ImageTest from "./ImageTest";
 import PublicProfile from "./PublicProfile";
 import Uploads from "./Uploads";
 import SignInSide from "./SignInSide";
@@ -156,7 +155,6 @@ function App() {
         <Route path="/Support"><Support login = {doLog} status = {loggedin}/></Route>
         <Route path="/Master"><Master id = {userId} adps={handleInc} proid={profId} points={points}/></Route>
         <Route path="/PublicProfile"><PublicProfile id = {userId} registered={hasProfile} proid={profId}/></Route>
-        <Route path="/ImageTest"><ImageTest id = {userId} registered={hasProfile} proid={profId}/></Route>
         <Route path="/Profile"><Profile id = {userId} registered={hasProfile} proid={profId} points={points}/></Route>
         <Route path="/Account"><Account id = {userId} regAco={hasAccount} acoid={acoId} points={points}/></Route>
         <Route path="/Gallery"><Album id = {userId}/></Route>
