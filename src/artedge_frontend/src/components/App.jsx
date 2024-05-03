@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Link, Route } from "wouter";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Header from "./Header";
+import { useAuth, AuthProvider } from "./use-auth-client";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Link, Route, useParams } from "wouter";
+import Header2 from "./Header2.jsx";
+import Footer from "./Footer";
 import Art from "./Art";
 import Support from "./Support";
+import Album from "./Album";
 import Master from "./Master";
-import Footer from "./Footer";
-import Profile from "./Profile";
-import {createActor, artedge_backend} from "../../../declarations/artedge_backend";
-import {AuthClient} from "@dfinity/auth-client"
-import {HttpAgent} from "@dfinity/agent";  
-import Album from "./Album";                         
-import { Principal } from "@dfinity/principal";
-import Account from "./Account";
 import PublicProfile from "./PublicProfile";
-import Uploads from "./Uploads";
+import Profile from "./Profile";
+import PreHeader from "./PreHeader"
+import PreSupport from "./PreSupport"
 import SignInSide from "./SignInSide";
+import PreMaster from "./PreMaster";
+import Account from "./Account";
+import Uploads from "./Uploads";
+import EditImageDetail from "./EditImageDetail";
+
 
 const defaultTheme = createTheme({
   palette: {
@@ -41,17 +43,13 @@ const defaultTheme = createTheme({
 });
 
 function App() {
-
-  let actor = artedge_backend;
-
-  const [loggedin, setloggedin] = useState(false);
-  const [userId, setUserId] = useState("2vxsx-fae");
-  const [myactor, setMyactor] = useState({actor});
+  const { isAuthenticated, identity, principal, whoamiActor } = useAuth();
+  let actor = whoamiActor;
   const [hasProfile, setHasProfile] = useState(false);
-  const [profId, setProfId] = useState("");
-  const [hasAccount, setHasAccount] = useState(false);
-  const [acoId, setAcoId] = useState();
+  const [profileId, setProfileId] = useState();
   const [points, setPoints] = useState(100);
+  const [hasAccount, setHasAccount] = useState(true);
+  const [acoId, setAcoId] = useState();
 
   // search
   const [inputText, setInputText] = useState("");
@@ -61,107 +59,116 @@ function App() {
   setInputText(lowerCase);
   };
 
-  async function onLogIn(){
-    // need to pass the has profile to Profile
-    console.log("We are at onLogIn functions");
-  };
+  function nopro(){
+    setHasProfile(false);
+    // setProfileId();
+  }
 
-  const handleRead = (event) => {
-    event.preventDefault();
-    const data = event.currentTarget;
-    readPs();
-  };
-  
-  const handleInc = (event) => {
-    event.preventDefault();
-    const data = event.currentTarget;
-    addPs();
-  };
+  function yespro(){
+    setHasProfile(true);
+  }
 
-  async function readPs(){
-    document.getElementById("greeting").innerText = "";
-    let points = await actor.read();
-    console.log("creating the points actor" + points);
-    setPoints(points);
-    document.getElementById("greeting").innerText = points;
-    // points = await C1.read();
-    // console.log(points);
-  };
+  function setpro(profileId){
+    setProfileId(profileId);
+  }
 
-  async function addPs(){
-    let uppoints = await actor.inc();
-    console.log("increment by 1" + uppoints);
-  };
+  function noacc(){
+    setHasAccount(false);
+    // setProfileId();
+  }
 
-  async function doLog() {
-    // create an auth client
-    let authClient = await AuthClient.create();
-    // start the login process and wait for it to finish
-    await new Promise((resolve) => {
-        authClient.login({
-            identityProvider: process.env.II_URL,
-            onSuccess: resolve,
-        });
-    });
-    // At this point you're authenticated, and you can get the identity from the auth client:
-    const identity = authClient.getIdentity();
-    // Using the identity obtained from the auth client, you can create an agent to interact with the IC.
-    const agent = new HttpAgent({identity});
-    // Using the interface description of our webapp, you create an actor that you use to call the service methods.
-    actor = createActor(process.env.ARTEDGE_BACKEND_CANISTER_ID, {
-        agent,
-    });
+  function yesacc(){
+    setHasAccount(true);
+  }
 
-    onLogIn();
-    //should all of this be passed to onLogIn();
-    const greeting = await actor.getCaller();
-    setUserId(greeting); //logged in principal with async call to backend
-    // console.log(greeting);
-    let myP = Principal.fromText(greeting);
-    let returnVisit = await actor.hasProfile(myP);
-    setProfId(returnVisit);
-    if (!returnVisit == "" || null){
+  function setacc(acoId){
+    setAcoId(acoId);
+  }
+
+  async function addPoints(adding){
+    if (hasProfile) {
+        //  setPlus(adding);
+    // console.log("adding this many points: " + adding);
+    let newtotal = (parseInt(points)) + adding;
+    // console.log("updating total points now to: " + newtotal);
+    let proidNat = (parseInt(profileId));
+    let mypoints = await actor.addPoints(proidNat, newtotal);
+    getMyPoints(proidNat); 
+    } else {
+      console.log("no points yet");
+      let newtotal = (parseInt(points)) + adding;
+    }    
+  }
+
+  async function getMyProfileId(){
+    let getProfileId = await actor.hasProfile(principal);
+    if (!getProfileId == "" | null){
+      console.log("has a profile initializing points counter");
+      setProfileId(getProfileId);
+      console.log("profile id is: " + profileId + " also " + getProfileId);
       setHasProfile(true);
-      // set the counter from the existing points
-      let proidNat = (parseInt(returnVisit));
-      let actualpoints = await actor.readPoints(proidNat);
-      setPoints(actualpoints);
-      console.log(actualpoints);
-    };
-    let returnAccount = await actor.hasAccount(myP);
-    setAcoId(returnAccount);
-    if (!returnAccount == ""){
-      setHasAccount(true);
-    };
+      getMyPoints(parseInt(getProfileId));
+    } else {
+      console.log("this is the first time logging in create the profile");
+      //this is the first time logging in create the profile
+      let profile = {
+        userPrincipal: principal,
+        email: "",
+        username: "",
+        alias: "",
+        genre: "",
+        artState: "",
+        interests: ""
+      };
+      let newProfileId = await actor.createProfile(profile);
+      setProfileId(newProfileId);
+      setHasProfile(true);
+      // getMyPoints(parseInt(newProfileId));
+    }
+  }
 
-    setloggedin(true);
-    // const myactor = actor;
-    setMyactor(actor);
-
-    return false;
+  async function getMyPoints (profileId){
+    let mypoints = await actor.readPoints(profileId);
+    setPoints(mypoints);
   };
 
-  async function logMeOut(){
-    setUserId("2vxsx-fae");
-    setloggedin(false);
+
+  if (isAuthenticated){
+    // console.log("we are authenticated now check for a profile");
+    getMyProfileId(principal);
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Header login = {doLog} loginStatus = {loggedin} logout = {logMeOut} input={inputText} shandle={inputHandler}/>
-        {/* <Uploads id = {userId} registered={hasProfile} proid={profId}/> */}
-        <Route path="/"><SignInSide /></Route>
-        <Route path="/Art"><Art input={inputText} readps={handleRead} adps={handleInc}/></Route>
-        <Route path="/Support"><Support login = {doLog} status = {loggedin}/></Route>
-        <Route path="/Master"><Master id = {userId} adps={handleInc} proid={profId} points={points}/></Route>
-        <Route path="/PublicProfile"><PublicProfile id = {userId} registered={hasProfile} proid={profId}/></Route>
-        <Route path="/Profile"><Profile id = {userId} registered={hasProfile} proid={profId} points={points}/></Route>
-        <Route path="/Account"><Account id = {userId} regAco={hasAccount} acoid={acoId} points={points}/></Route>
-        <Route path="/Gallery"><Album id = {userId}/></Route>
-        <Route path="/Uploads"><Uploads id = {userId} registered={hasProfile} proid={profId}/></Route>
-        <Footer />
-    </ThemeProvider>
+    <>      
+      <header>
+      {isAuthenticated ? <Header2 loginStatus = {isAuthenticated} input={inputText} shandle={inputHandler}/> : <PreHeader input={inputText} shandle={inputHandler}/>}
+      </header>
+      <main>
+        <Route path="/" component={SignInSide} />
+        <Route path="/PublicProfile/:id">
+          {params => <PublicProfile id={params.id} />}
+        </Route>
+        <Route path="/EditImageDetail/:id">
+          {params => <EditImageDetail id={params.id} />}
+        </Route>
+        <Route path="/Art"><Art input={inputText} addPoints={addPoints} loginStatus = {isAuthenticated}/></Route>
+        <Route path="/Support">{isAuthenticated ? <Support loginStatus = {isAuthenticated}/> : <PreSupport loginStatus = {isAuthenticated}/>}</Route>
+        <Route path="/Master">{isAuthenticated ? <Master addPoints={addPoints} points={points}/> : <PreMaster loginStatus = {isAuthenticated}/>}</Route>
+        <Route path="/PublicProfile"><PublicProfile id = {principal} registered={hasProfile} proid={profileId}/></Route>
+        <Route path="/Profile"><Profile registered={hasProfile} proid={profileId} points={points} nopro={nopro} yespro={yespro} setpro={setpro}/></Route>
+        <Route path="/Account"><Account regAco={hasAccount} acoid={profileId} noacc={noacc} yesacc={yesacc} setacc={setacc}/></Route>
+        <Route path="/Gallery"><Album id = {principal}/></Route>
+        <Route path="/Uploads"><Uploads proid={profileId}/></Route>
+      </main>
+      <Footer />
+    </>
   );
 }
 
-export default App;
+export default () => (
+  <AuthProvider>
+    <ThemeProvider theme={defaultTheme}>
+        <App />
+    </ThemeProvider>
+  </AuthProvider>
+);

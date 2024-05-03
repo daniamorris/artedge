@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Link } from "wouter";
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -8,11 +10,30 @@ import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import IconButton from '@mui/material/IconButton';
-import { Link } from '@mui/material';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+// import { Link } from '@mui/material';
 // import Avatar from '@mui/material/Avatar';
 // import { red } from '@mui/material/colors';
 
 export default function ImageDetail(props) {
+  const mydollars = <MonetizationOnIcon color="secondary" />;
+  const userlink = "/PublicProfile/" + props.id;
+  console.log(props);
+
+  function favoriteMe(e){
+    const {id, name} = e.currentTarget;
+    console.log("Favoriting " + id + name);
+    // addFavorite(1); //need to create this
+  }
+  function shareMe(e){
+    const {id, name} = e.currentTarget;
+    console.log("Sharing " + id + name);
+  }
+    function tipMe(e){
+    const {id, name} = e.currentTarget;
+    console.log("Tipping " + id + name);
+  }
+
   return (
     <Card sx={{ maxWidth: 500 }} id={props.id}>
       <CardMedia
@@ -29,34 +50,26 @@ export default function ImageDetail(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        {/* <Button size="small">Support</Button> */}
-        <Button size="small" href='#'>Profile</Button>
-        {/* <Typography
-            variant="h6"
-            noWrap
-            component={Link}
-            href="/PublicProfile"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              // letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Profile
-          </Typography> */}
+        <Link href={userlink}>
+          <Button size="small">Profile</Button>
+        </Link>
+        {/* <CopyToClipboard text="Hello!">
+          <button>Copy to clipboard</button>
+        </CopyToClipboard> */}
           {/* <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
             A
           </Avatar> */}
-        <IconButton aria-label="add to favorites">
+        <IconButton id={userlink} name={props.title} onClick={favoriteMe} aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
+        <CopyToClipboard text="Hello my share link!">
+          <IconButton id={userlink} name={props.title} onClick={shareMe} aria-label="share">
+            <ShareIcon />
+          </IconButton>
+        </CopyToClipboard>
+        <IconButton id={userlink} name={props.title} onClick={tipMe} aria-label="share">
+            {mydollars}
+          </IconButton>
       </CardActions>
     </Card>
   );

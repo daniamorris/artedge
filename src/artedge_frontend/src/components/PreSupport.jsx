@@ -5,30 +5,27 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { List } from "@mui/material";
 
-function Support(loginStatus) {
-  //remove the isLogged line if this is good
+function PreSupport(props) {
   const { login } = useAuth();
-  let mystatus = loginStatus;
+  let mystatus = props.loginStatus;
     return (
       <React.Fragment>
       <CssBaseline />
       <Container maxWidth="sm">
       <Box sx={{ height: 20, }}></Box>
       <Box sx={{ width: '100%', maxWidth: 500 }}>
-      <Typography>
+      <Typography gutterBottom>
         <h1>Do you like Art? </h1>
-        <h1>Here's where you're at! </h1>
       </Typography>
-      <Typography>
-        <h2><i>Do you enjoy supporting others?</i></h2>
+      <Typography gutterBottom>
+      <h2><i>Do you enjoy supporting others?</i></h2>
       </Typography>
       <Typography variant="h5" gutterBottom>
       Art Edge showcases art and supports creators via exposure and education. The following is a list of ways you can support others through this dapp:
       </Typography>
       <Typography gutterBottom>
-      <ul>
+        <ul>
           <li>Viewing and starring art, favoriting profiles. </li>
           <li>Requesting a commission</li>
           <li>Buying a print or an NFT</li>
@@ -50,4 +47,4 @@ function Support(loginStatus) {
     </React.Fragment>
     );
   }
-export default Support;
+export default PreSupport;

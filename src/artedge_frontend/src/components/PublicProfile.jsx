@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useAuth, AuthProvider } from "./use-auth-client";
 import {createActor, artedge_backend } from "../../../declarations/artedge_backend";
 import { Principal } from "@dfinity/principal";
 import Grid from '@mui/material/Grid';
@@ -27,9 +28,12 @@ const featuredPosts = [
   },
 ];
 
+
 export default function PublicProfile(props) {
   let actor = artedge_backend;
-
+  // const { isAuthenticated, identity, principal, whoamiActor } = useAuth();
+  // let actor = whoamiActor;
+  let nowp = props.id;
   const [mainFeaturedPost, setmainFeaturedPost] = useState({
     title: 'My Username is',
     description:
@@ -37,14 +41,21 @@ export default function PublicProfile(props) {
     image: 'https://source.unsplash.com/random?wallpapers',
     imageText: 'main image description',
     linkText: 'Continue reading…',
-});
+  });
 
-const handleShow = (event) => {
-  event.preventDefault();
-  // const {name, value} = event.target;
-  // console.log("here now"+ {[name]:value} );
-  displayMyProfile("0");
-};
+  useEffect(() => {
+    // Initialize Profile
+    displayMyProfile(nowp);
+  }, []);
+
+  const handleShow = (event) => {
+    event.preventDefault();
+    // const {name, value} = event.target;
+    // console.log("here now"+ {[name]:value} );
+    // displayMyProfile(props.proid); //workes for logged in to show user's profile
+    displayMyProfile(props.id); // for anonymous
+    // displayMyProfile("1");
+  };
 
   async function displayMyProfile(stringId) {
     const profileDisplayed = await actor.readProfile(stringId);
@@ -66,7 +77,7 @@ const handleShow = (event) => {
   
   return (
       <Container maxWidth="lg">
-        <Button name="showbut" id="showbut" onClick={handleShow}>show profile</Button>
+        {/* <Button name="showbut" id="showbut" onClick={handleShow}>show profile</Button> */}
         <main>
           <MainFeaturedPost post={mainFeaturedPost} />
           <Grid container spacing={4}>

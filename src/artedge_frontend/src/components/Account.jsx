@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAuth, AuthProvider } from "./use-auth-client";
 import {artedge_backend } from "../../../declarations/artedge_backend";
 import { renderToString } from 'react-dom/server';
 import Button from '@mui/material/Button';
@@ -12,6 +13,7 @@ import { Principal } from "@dfinity/principal";
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
+import CircleLoading from "./CircleLoading";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -21,37 +23,25 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function Account(props) {
-
-  let actor = artedge_backend;
-  let principal = Principal.fromText(props.id);
-  let points = props.points;
-  let stgpoints = renderToString(points);
+export default function Account({regAco, acoid, noacc, yesacc, setacc}) {
+  const { principal, whoamiActor } = useAuth();
+  let actor = whoamiActor;
 
   const cp = "Create";
   const up = "Update";
+  const [loading, Setloading] = useState(false);
   const [account, setAccount] = useState({
     userPrincipal: principal,
     contact: "",
     commissions: "",
-    payments: "",
-    points: points
+    payments: ""
 });
-  const [accountId, setAccountId] = useState(props.acoid);
-  const [hasAccount, setHasAccount] = useState(props.regAco);
 
-  if (!accountId ==""){
-    displayMyAccount(accountId);
+  if (!acoid == "" | null){
+    displayMyAccount(acoid);
+  } else {
+    console.log("we deleted the account");
   }
-
-  function hide() {
-    var x = document.getElementById("hhide");
-    if (x.style.display === "none") {
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
-    }
-  } 
 
   const handleCreate = (event) => {
     event.preventDefault();
@@ -60,15 +50,13 @@ export default function Account(props) {
       userPrincipal: principal,
       contact: data.get('contact'),
       commissions: data.get('commissions'),
-      payments: data.get('payments'),
-      points: points
+      payments: data.get('payments')
     });
     createMyAccount({
       userPrincipal: principal,
       contact: data.get('contact'),
       commissions: data.get('commissions'),
-      payments: data.get('payments'),
-      points: stgpoints
+      payments: data.get('payments')
     });
   };
 
@@ -79,40 +67,33 @@ export default function Account(props) {
       userPrincipal: principal,
       contact: data.get('contact'),
       commissions: data.get('commissions'),
-      payments: data.get('payments'),
-      points: points
+      payments: data.get('payments')
     })
-    updateMyAccount(accountId, {
+    updateMyAccount(acoid, {
       userPrincipal: principal,
       contact: data.get('contact'),
       commissions: data.get('commissions'),
-      payments: data.get('payments'),
-      points: stgpoints
+      payments: data.get('payments')
     });
-  };
-
-  const handleShow = (event) => {
-    event.preventDefault();
-    displayMyAccount(accountId);
   };
 
   const handleDelete = (event) => {
     event.preventDefault();
-    deleteMyAccount(accountId);
+    deleteMyAccount(acoid);
   };
 
   async function createMyAccount(account) {
     let accountId = await actor.createAccount(account);
-    setAccountId(accountId);
-    setHasAccount(true);
+    setacc(accountId);
+    yesacc();
     displayMyAccount(accountId);
   }
 
   async function updateMyAccount(stringId, account) {
-    document.getElementById("hhide").innerText = "update in progress";
+    Setloading(true);
     let accountUpdated = await actor.updateAccount(stringId, account);
-    displayMyAccount(stringId);
-    hide();
+    displayMyAccount(acoid);
+    Setloading(false);
   }  
 
   async function displayMyAccount(stringId) {
@@ -121,48 +102,29 @@ export default function Account(props) {
     document.getElementById("contact").value = contact;
     document.getElementById("commissions").value = commissions;
     document.getElementById("payments").value = payments;
-    // document.getElementById("points").value = points;
-    setHasAccount(true);
   }  
 
   async function deleteMyAccount(stringId) {
+    Setloading(true);
     const accountDeleted = await actor.deleteAccount(stringId);
     const alsoDeleted = await actor.deleteAcoPrinc(stringId);
     setAccount({
         userPrincipal: principal,
         contact: "",
         commissions: "",
-        payments: "",
-        points: points
+        payments: ""
     });
     document.getElementById("contact").value = "";
     document.getElementById("commissions").value = "";
     document.getElementById("payments").value = "";
-    setHasAccount(false);
-  }
-
-  async function checkMyAccount(){
-    let returnVisit = await actor.hasAccount(principal);
-    console.log(returnVisit);
-    console.log(props.regAco + props.acoid); //this works lift up state
-    if (!returnVisit == ""){
-      console.log("this is a return visitor show account" + returnVisit);
-      displayMyAccount(returnVisit)
-    }
-    // if return user render account don't add another 
-  }
-
-  function returnUser(accountId){
-    console.log("return user");
-    displayMyAccount(accountId);
+    noacc();
+    Setloading(false);
+    setacc(null);
   }
 
 return (
       <Container component="main" maxWidth="xs" sx={{backgroundColor: 'primary.light', borderRadius: 1.5, opacity: 0.7, marginBottom: 4}}>
         <CssBaseline />
-        {/* <h1>{account.contact}</h1>
-        <Button onClick={checkMyAccount}>return visit?</Button> */}
-        {/* <Button onClick={handleShow}>show account</Button> */}
         <Box
           sx={{
             marginTop: 8,
@@ -172,10 +134,10 @@ return (
           }}
         >
           <Typography component="h1" variant="h5" sx={{ mt: 3}}>
-            {hasAccount ? up : cp} Account
+            {regAco ? up : cp} Account
           </Typography>
-          <div id="hhide"></div>
-          <Box component="form" noValidate onSubmit={hasAccount ? handleUpdate : handleCreate} sx={{ mt: 3 }}>
+          {loading && <CircleLoading />}
+          <Box component="form" noValidate onSubmit={regAco ? handleUpdate : handleCreate} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
             <Grid item xs={12}>
                 <TextField
@@ -211,19 +173,6 @@ return (
                   }}
                 ></TextField>
               </Grid>              
-              {/* <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  hidden={true}
-                  name="points"
-                  id="points"
-                  label="points total"
-                  InputLabelProps={{
-                    shrink: true,
-                    readOnly: true,
-                  }}
-                ></TextField>
-              </Grid> */}
             </Grid>
             <Button
               type="submit"
@@ -231,14 +180,14 @@ return (
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              {hasAccount ? up : cp} Account
+              {regAco ? up : cp} Account
             </Button>
-            {hasAccount && 
+            {/* {regAco && 
               <Stack spacing={1}>
                 <Item>Danger Zone</Item>
                 <Item><Button variant="contained" color="error" onClick={handleDelete}>delete account</Button></Item>
               </Stack>
-            }
+            } */}
           </Box>
           <Box sx={{ height: 10}}></Box>
         </Box>

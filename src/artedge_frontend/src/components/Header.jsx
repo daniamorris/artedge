@@ -1,5 +1,6 @@
 import React from "react";
 import ResponsiveAppBar from "./ResponsiveAppBar.jsx";
+import ListProfiles from "./ListProfiles.jsx";
 
 function Header(props){
 return(

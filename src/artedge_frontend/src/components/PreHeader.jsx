@@ -1,0 +1,271 @@
+import * as React from 'react';
+import { useAuth } from "./use-auth-client";
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
+import { styled, alpha } from '@mui/material/styles';
+import { Link } from 'wouter';
+
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '20ch',
+      },
+    },
+  },
+}));
+
+const pages = ['Art', 'Support', 'Master'];
+// const pages = ['Art', 'Support', 'Master', 'PublicProfile','ImageTest', 'Uploads'];
+// const settings = ['Profile', 'Gallery', 'Account'];
+
+function PreHeader(props) {
+  const { login, logout } = useAuth();
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+//   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [searchData, setSearchData] = React.useState(null);
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+//   const handleOpenUserMenu = (event) => {
+//     setAnchorElUser(event.currentTarget);
+//   };
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+//   const handleCloseUserMenu = () => {
+//     setAnchorElUser(null);
+//   };
+
+  function handleChange(event){
+    const {name, value} = event.target;
+    setSearchData(prevSearchData => {
+        return {
+            ...prevSearchData, 
+            [name]: value
+        }
+    })
+    // console.log("searching"+ searchData);
+  }
+
+  //returns login button or settings menu based on loginStatus
+//   function loginBar () {
+//     let mystatus = props.loginStatus;
+//     if (mystatus){
+//     //   console.log("we are officially logged in")
+//       return(
+//         <Box sx={{ flexGrow: 0 }}>
+//         <Tooltip title="Open settings">
+//           <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+//             <Avatar alt="Settings" src="squares14.jpg" />
+//           </IconButton>
+//         </Tooltip>
+//         <Menu
+//           sx={{ mt: '45px' }}
+//           id="menu-appbar"
+//           anchorEl={anchorElUser}
+//           anchorOrigin={{
+//             vertical: 'top',
+//             horizontal: 'right',
+//           }}
+//           keepMounted
+//           transformOrigin={{
+//             vertical: 'top',
+//             horizontal: 'right',
+//           }}
+//           open={Boolean(anchorElUser)}
+//           onClose={handleCloseUserMenu}
+//         >
+//           {settings.map((setting) => (
+//             <MenuItem key={setting} onClick={handleCloseUserMenu}>
+//               <Typography color="primary" textAlign="center"><Link href={"/" + setting}>{setting}</Link></Typography>
+//             </MenuItem>
+//           ))}
+//           <MenuItem>
+//           <Typography color="primary" textAlign="center">
+//           <Button variant="contained" onClick={logout} href="/">Log out</Button>
+//           </Typography>
+//           </MenuItem>
+//         </Menu>
+//       </Box>
+//       )
+//         }else {
+//     //   console.log("we are officially logged out")
+//       return(
+//         <>
+//         <Button variant="contained" onClick={login}>Login</Button>
+//         <Box sx={{  width: 10, }}></Box>
+//         </>
+//       )
+//     }
+    
+//   };
+
+  function loginBarNew (){
+    return(
+        <>
+        <Button variant="contained" onClick={login}>Login</Button>
+        <Box sx={{  width: 10, }}></Box>
+        </>
+      )
+  }
+
+  return (
+    <AppBar position="static" color="primary">
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}>
+          <img src='logoMarklg.png' width={30} />
+          </Box>
+          <Typography
+            variant="h6"
+            noWrap
+            component={Link}
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              // letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            ArtEdge
+          </Typography>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: 'block', md: 'none' },
+              }}
+            >
+              {pages.map((page) => (
+                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <Typography color="primary" textAlign="center"><Link href={"/" + page}>{page}</Link></Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
+          <Box sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}>
+          <img src='logoMarklg.png' width={30} />
+          </Box>
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: 'flex', md: 'none' },
+              flexGrow: 1,
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              // letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            ArtEdge
+          </Typography>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {pages.map((page) => (
+              <Button
+                href={"/" + page}
+                component={Link}
+                key={page}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                {page}
+              </Button>
+            ))}
+          </Box>
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              id='searchBar'
+              placeholder="Search…"
+              inputProps={{ 'aria-label': 'search' }}
+              onChange={props.shandle}
+            />
+          </Search>
+          <Box sx={{  width: 10, }}></Box>
+          {loginBarNew()}
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
+}
+export default PreHeader;

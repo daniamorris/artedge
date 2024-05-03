@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import {HttpAgent} from '@dfinity/agent';
+import {AssetManager} from '@dfinity/assets';
+import { useAuth, AuthProvider } from "./use-auth-client";
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import CameraIcon from '@mui/icons-material/PhotoCamera';
@@ -16,9 +19,10 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import GalleryCard from './GalleryCard';
-import data from "../data/ImageData.json"
+import data from "../data/ImageDataGal.json"
+import { canisterId } from "../../../declarations/artedge_backend";
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const cards = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
 const galleryInfo = {
   title: 'Gallery Title',
@@ -26,6 +30,7 @@ const galleryInfo = {
     "Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.",
 };
 
+//replace this with real data
 const featuredImages = data;
 const featuredImages1 = [
   {
@@ -45,6 +50,17 @@ const featuredImages1 = [
 ];
 
 export default function Album() {
+  // will need canisterId for call to listImgKeyByCan(canisterId), then call each one to get gallery
+  // this means I need to match principal user to canisters listCanisters: () but also userid?
+  // <Route path="/PublicProfile/:id">
+  // {params => <PublicProfile id={params.id} />}
+  // </Route>
+  const { isAuthenticated, identity, principal, whoamiActor } = useAuth();
+  const isLocal = !window.location.host.endsWith('icp0.io');
+  const imghost = isLocal ? 'http://127.0.0.1:4943' : window.location.hostname;
+  const host = window.location.hostname;
+  console.log(window.location.hostname);
+
   return (
     <>
       <CssBaseline />
@@ -93,7 +109,7 @@ export default function Album() {
           </Container>
         </Box>
         <Container sx={{ py: 8 }} maxWidth="md">
-          {/* End hero unit */}
+        {/* End hero unit */}
           <Grid container spacing={4}>
             {cards.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4}>

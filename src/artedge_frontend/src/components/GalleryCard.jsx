@@ -6,16 +6,15 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-export default function GalleryCard(props) {
-    const mykey = props.keyid;
-    const { galpost } = props;
-    const {[mykey]:{key}} = galpost;
-    const {[mykey]:{title}, [mykey]: {desc}, [mykey]:{img}, [mykey]:{pid}} = galpost; 
+export default function GalleryCard({keyid, galpost}) {
+    const {[keyid]:{key}} = galpost;
+    const {[keyid]:{title}, [keyid]: {desc}, [keyid]:{img}, [keyid]:{pid}} = galpost; 
     console.log(galpost); 
     console.log(title); 
     console.log(pid); 
-    console.log(mykey); 
+    console.log(keyid); 
     console.log(key); 
+
   return (
     <Card
     sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}

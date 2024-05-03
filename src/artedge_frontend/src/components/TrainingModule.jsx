@@ -9,33 +9,21 @@ import { Link } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { InfinitySpin } from 'react-loader-spinner';
 
-let actor = artedge_backend;
+// let actor = artedge_backend;
 
-export default function TrainingModule(props) {
+export default function TrainingModule({ addPoints }) {
+
+  // need to rewrite points system and deliver training steps as a list that I iterate
   const [expanded, setExpanded] = useState(false);
 
-
   const handleChecked = (event) => {
-    addPs();
+    addPoints(11);
   };
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
-  };
-
-  async function addPs(){
-    if (props.proid == ""){
-      console.log("user has not created a profile yet");
-    } else {
-     const proid = parseInt(props.proid);
-     console.log(props.proid);
-     let uppoints = await actor.inc100();
-     let points = await actor.read();
-     console.log("Increment by 100 points are now at: " + uppoints + " Does that match my points? " + points);
-     let storepoints = await actor.addPoints(proid,points);
-    };
-
   };
 
   return (

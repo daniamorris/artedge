@@ -3,20 +3,20 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import ImageFeed from './ImageFeed';
-import { Button } from "@mui/material";
+import PreImageFeed from './PreImageFeed';
+import DataFeed from './DataFeed';
 
-export default function Art({input, readps, adps}) {
+export default function Art({input, addPoints, loginStatus}) {
   return (
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="sm">
-      {/* <h1 id="greeting"></h1>
-      <Button id={"1"} name={"points"} variant="contained" onClick={readps}>Read points</Button>
-      <Button id={"1"} name={"points"} variant="contained" onClick={adps}>Add points</Button> */}
       <Box sx={{ width: '100%', maxWidth: 500 }}>
-        <ImageFeed input={input}/>
+      {loginStatus ? <ImageFeed input={input} addPoints={addPoints}/> : <PreImageFeed input={input}/>}
+        {/* {loginStatus ? <DataFeed input={input} addPoints={addPoints}/> : <DataFeed input={input}/>} */}
         </Box>
         {/* <CustomImageList /> */}
+        {/* <img src="http://127.0.0.1:4943/uploads/squares5.500.500.jpg?canisterId=b77ix-eeaaa-aaaaa-qaada-cai" /> */}
       </Container>
     </React.Fragment>
   );

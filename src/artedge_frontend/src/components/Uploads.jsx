@@ -1,39 +1,13 @@
-import React from "react";
-import {Ed25519KeyIdentity} from '@dfinity/identity';
 import {HttpAgent} from '@dfinity/agent';
 import {AssetManager} from '@dfinity/assets';
-import {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Masonry from "react-masonry-css";
 import '../App.css';
-import { Button } from "@mui/material";
-import {createActor, artedge_backend} from "../../../declarations/artedge_backend";
-
-let actor = artedge_backend;
-
-//pass the agent from login to create the AssetManager and eleminate hardcoded principal
-// https://agent-js.icp.xyz/assets/index.html for @dfinity/assets info includs get and delete
-// create an asset canister for the profile principal to upload to 
-
-// Hardcoded principal: 535yc-uxytb-gfk7h-tny7p-vjkoe-i4krp-3qmcl-uqfgr-cpgej-yqtjq-rqe
-// Should be replaced with authentication method e.g. Internet Identity when deployed on IC
-
-const identity = Ed25519KeyIdentity.generate(new Uint8Array(Array.from({length: 32}).fill(0)));
-const isLocal = !window.location.host.endsWith('icp0.io');
-const agent = new HttpAgent({
-    host: isLocal ? `http://127.0.0.1:${window.location.port}` : 'https://icp0.io', identity,
-});
-if (isLocal) {
-    agent.fetchRootKey();
-}
-
-// // Canister id can be fetched from URL since frontend in this example is hosted in the same canister as file upload
-// const canisterId = new URLSearchParams(window.location.search).get('canisterId') ?? /(.*?)(?:\.raw)?\.ic0.app/.exec(window.location.host)?.[1] ?? /(.*)\.localhost/.exec(window.location.host)?.[1];
-
-//will need to get the canisterId of the user's asset cansiter (let myUpload = "U" # stringId;)
-const canisterId = process.env.ARTEDGE_FRONTEND_CANISTER_ID;
-
-// // Create asset manager instance for above asset canister
-const assetManager = new AssetManager({canisterId, agent});
+import { useAuth, AuthProvider } from "./use-auth-client";
+import { Button } from '@mui/material';
+import CircleLoading from "./CircleLoading";
+import Box from '@mui/material/Box';
+import { useLocation } from "wouter";
 
 // Get file name, width and height from key
 const detailsFromKey = (key) => {
@@ -62,88 +36,84 @@ const detailsFromFile = async (file) => {
 }
 
 const Uploads = (props) => {
-    const [uploads, setUploads] = useState([]);
-    const [progress, setProgress] = useState(null);
-    const [myBatch, setMyBatch] = useState({
-        upid: "",
-        pid: "",
-        batch: {0: {}}
-        
+    const [location, setLocation] = useLocation();
+    const { isAuthenticated, identity, principal, whoamiActor } = useAuth();
+    const [loading, Setloading] = useState(false);
+    const mypid = props.proid;
+    const [myCanisterId, setMyCanisterId] = useState(process.env.CANISTER_ID_ARTEDGE_FRONTEND); //my default frontend for dev
+    // const [myCanisterId, setMyCanisterId] = useState("fsmcb-yaaaa-aaaal-adgsa-cai"); //my default frontend for ic dev 
+    // const [myCanisterId, setMyCanisterId] = useState("6pcc4-caaaa-aaaal-add5q-cai"); //my default frontend for ic live 
+    const [deleteIm, setDeleteIm] = useState("")
+
+    async function getMyCanisterId(){
+        const gotCanisterId = await whoamiActor.getMyUpCanister(principal);
+        // console.log("first before if can: " + gotCanisterId);
+        if (!gotCanisterId == "" | null){
+          setMyCanisterId(gotCanisterId);
+        //   console.log("got can: " + gotCanisterId);
+        } else {
+            const newCanisterId = await whoamiActor.createUploads();
+            setMyCanisterId(newCanisterId);
+            // console.log( "created a new Canister:" + newCanisterId);
+        }
+        Setloading(false);
+      }
+    
+    const isLocal = !window.location.host.endsWith('icp0.io');
+    const agent = new HttpAgent({
+        host: isLocal ? `http://127.0.0.1:${window.location.port}` : 'https://icp0.io', identity,
     });
-
-    const handleSave = (event) => {
-    event.preventDefault();
-    const data = event.currentTarget;
-    setMyBatch ({
-        upid: data.id,
-        pid: data.name,
-        batch: {0: {uploads}}
-    });
-    // key, fileName, width, height (upload data)
-    saveIt({
-        upid: data.id,
-        pid: data.name,
-        batch: {0: {uploads}}
-    });
-    console.log("saved a Batch " + data.name);
-    // saveIt(myBatch);
-    };
-      
-    const handleList = (event) => {
-        event.preventDefault();
-        const data = event.currentTarget;
-        // setMyBatch ({
-        //   upid: data.id,
-        //   pid: data.name,
-        //   batch: uploads
-        // });
-        // // key, fileName, width, height (upload data)
-        // saveIt({
-        //     upid: data.id,
-        //     pid: data.name,
-        //     batch: uploads
-        // });
-        console.log("listing files " + data.name);
-        listFiles();
-    };
-
-    async function saveIt(myBatch){
-        // const { 0: { key } } = uploads;
-        // const {key} = uploads;
-        // public type BatchUpload = {
-        //     upid: 1;
-        //     pid: 1;
-        //     batch: uploads;
-        //   };
-
-        console.log("i am here" + uploads);
-        let myBatchId = await actor.saveBatchUpload(myBatch);
-        console.log("my batch" + myBatchId);
-        console.log("my uploads" + uploads);
-        //how do I iterate over the images here to then save each one
-        //also is this redundant? the assetcansiter is saving the batch
-        //do i just create the hash and add or delete to mimic the assetmanager?
-        //const mybatch = await actor.saveBatchUpload(batch : Types.Image);
-    };
-
-    async function listFiles(){
-        //this all works just fine
-        const files = await assetManager.list();
-        console.log(files);
-        const asset = await assetManager.get('/uploads/squares1.500.500.jpg');
-        const blob = await asset.toBlob();
-        const url = URL.createObjectURL(blob);
-        console.log(url);
+    if (isLocal) {
+        agent.fetchRootKey();
     }
 
+    async function deleteMyImage(stringId) {
+        let imageDeleted = await whoamiActor.findImgDelete(stringId);
+        let imageDeleted2 = await whoamiActor.deleteImg(imageDeleted);
+        setDeleteIm(imageDeleted2);
+    };
+      
+    const handleDelete = (event) => {
+        event.preventDefault();
+        let mmykey = (event.currentTarget.name);
+        let deleted = assetManager.delete(mmykey);
+        let alsodeleted = deleteMyImage(mmykey);
+    };
+      
+    const handleEdit = (event) => {
+        event.preventDefault();
+        let id = (event.currentTarget.id);
+        editImage(id);
+    };
+
+    async function editImage(stringId) {
+        Setloading(true);
+        let imageSelected = await whoamiActor.findImgDelete(stringId);
+        const editlink = "/EditImageDetail/" + imageSelected;
+        setLocation(editlink);
+        Setloading(false);
+    };
+
+    const imghost = isLocal ? 'http://127.0.0.1:4943' : 'https://6pcc4-caaaa-aaaal-add5q-cai.icp0.io';
+    // const imghost = window.location.hostname;  //doesn't work for localhost test for live canisters
+    const canisterId = myCanisterId;
+
+    // Create asset manager instance for above asset canister
+    const assetManager = new AssetManager({canisterId, agent});
+
+    const [uploads, setUploads] = useState([]);
+    const [progress, setProgress] = useState(null);
+
     useEffect(() => {
+        Setloading(true);
         assetManager.list()
             .then(assets => assets
                 .filter(asset => asset.key.startsWith('/uploads/'))
                 .sort((a, b) => Number(b.encodings[0].modified - a.encodings[0].modified))
                 .map(({key}) => detailsFromKey(key)))
             .then(setUploads);
-    }, []);
+            getMyCanisterId();
+    }, [myCanisterId, deleteIm]);
 
     const uploadPhotos = () => {
         const input = document.createElement('input');
@@ -157,12 +127,22 @@ const Uploads = (props) => {
                 const items = await Promise.all(Array.from(input.files).map(async (file) => {
                     const {fileName, width, height} = await detailsFromFile(file);
                     const key = await batch.store(file, {path: '/uploads', fileName});
-                    console.log("here for each file" + key);
+                    //saving image data to work with later
+                    const thisBkey = await whoamiActor.saveImagesUpload({
+                        key: key,
+                        fileName: fileName,
+                        width: String(width),
+                        height: String(height),
+                        canId: canisterId,  
+                        title: fileName,
+                        description: fileName,
+                        pid: mypid,
+                    });
+                    // console.log(thisBkey);
                     return {key, fileName, width, height};
                 }));
                 await batch.commit({onProgress: ({current, total}) => setProgress(current / total)});
-                setUploads(prevState => [...items, ...prevState]);
-                // console.log("I am here with uploads " + uploads);
+                setUploads(prevState => [...items, ...prevState])
             } catch (e) {
                 if (e.message.includes('Caller is not authorized')) {
                     alert("Caller is not authorized, follow Authorization instructions in README");
@@ -176,19 +156,35 @@ const Uploads = (props) => {
     }
 
     return (
-        <div className={'App-wrapper'}>
-            <Button id={"1"} name={"list button"} variant="contained" onClick={handleList}>List files</Button>
-            <Button id={"1"} name={"handle save butt"} variant="contained" onClick={handleSave}>Save batch</Button>
-            <Masonry breakpointCols={{default: 4, 600: 2, 800: 3}} className={'App-masonry'}
-                     columnClassName="App-masonry-column">
-                <button className={'App-upload'} onClick={uploadPhotos}>📂 Upload photo</button>
-                {uploads.map(upload => (
-                    <div key={upload.key} className={'App-image'} style={{aspectRatio: upload.width / upload.height}}>
-                        <img src={upload.key} alt={upload.fileName} loading={'lazy'}/>
-                    </div>))}
-            </Masonry>
-            {progress !== null && <div className={'App-progress'}>{Math.round(progress * 100)}%</div>}
-        </div>
+        <>           
+            {/* {myModal}    */}
+            <Box
+            sx={{
+            marginTop: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            }}
+            >
+                {loading && <CircleLoading />}
+                {/* <Typography> */}
+                <h1>Click Images to Edit Details</h1>
+                {/* </Typography> */}
+            </Box>
+            <div className={'App-wrapper'}>
+                <Masonry breakpointCols={{default: 4, 600: 2, 800: 3}} className={'App-masonry'}
+                        columnClassName="App-masonry-column">
+                    <button className={'App-upload'} onClick={uploadPhotos}>📂 Upload photo</button>
+                    {uploads.map(upload => (
+                        <div key={upload.key} className={'App-image'} style={{aspectRatio: upload.width / upload.height}}>
+                            <img src={imghost + upload.key + "?canisterId=" + canisterId} name={canisterId} alt={upload.fileName} id={upload.key} width={upload.width} height={upload.height} loading={'lazy'} onClick={handleEdit}/>
+                            <Button variant="contained" name={upload.key} onClick={handleDelete}>delete me</Button>
+                            {/* <Button variant="contained" name={upload.key} onClick={handleEdit}>edit me</Button> */}
+                        </div>))}
+                </Masonry>
+                {progress !== null && <div className={'App-progress'}>{Math.round(progress * 100)}%</div>}
+            </div>
+        </>
     );
 }
 

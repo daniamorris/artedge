@@ -16,7 +16,7 @@ const style = {
   p: 4,
 };
 
-export default function ImageFeed({input, addPoints}) {
+export default function PreImageFeed({input}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -27,9 +27,8 @@ export default function ImageFeed({input, addPoints}) {
   }
 
   function handleClicked(e){
-    const {name, title, id, src, alt,loading} = e.target;
+    const {name, title, id, src, alt, loading} = e.target;
     setMyModal(<BasicModal id={id} title={title} image={src} desc={alt} open={handleOpen} onClose={shutit}/>);
-    addPoints(1);
   }
 
     const filteredData = data.filter((el) => {

@@ -1,17 +1,20 @@
 import * as React from 'react';
+import { useAuth } from "./use-auth-client";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import { CardActionArea } from '@mui/material';
 import { Container } from '@mui/material';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
-import TrainingModule from './TrainingModule';
+import PreTrainingModule from './PreTrainingModule';
 
-export default function Master({addPoints}) {
-
-  const [expanded, setExpanded] = React.useState(false);
+export default function PreMaster(props) {
+    const { login } = useAuth();
+    const [expanded, setExpanded] = React.useState(false);
+    let mystatus = props.loginStatus;
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -43,7 +46,10 @@ export default function Master({addPoints}) {
             {/* </Collapse> */}
         {/* </CardActionArea> */}
         </Card>
-        <TrainingModule addPoints={addPoints}/>
+        <PreTrainingModule id = {props.id} proid={props.proid} points={props.points} mycounter={props.mycounter}/>
+        <Typography variant="h5" display="block" gutterBottom>
+      {!mystatus && <Button variant="contained" onClick={login}>Login to start</Button>}
+      </Typography>
         <Box mt={6} />
     </Container>
   );
