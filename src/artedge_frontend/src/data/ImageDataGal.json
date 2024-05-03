@@ -103,47 +103,5 @@
     "img": "squares11.jpg",
     "title": "The Nashville Brothers",
     "desc": "A silhouette of two people playing guitar at sunset."
-  },
-  {
-    "key": "16",
-    "pid": "1",
-    "img": "squares12.jpg",
-    "title": "Carhenge",
-    "desc": "A weird metal car sculpture in the desert."
-  },
-  {
-    "key": "17",
-    "pid": "1",
-    "img": "squares13.jpg",
-    "title": "Fire Tree",
-    "desc": "Two femmes putting lights on a metal sculpture."
-  },
-  {
-    "key": "18",
-    "pid": "1",
-    "img": "squares14.jpg",
-    "title": "Neon S",
-    "desc": "A blue neon sign with an S and a purple neon piece."
-  },
-  {
-    "key": "19",
-    "pid": "1",
-    "img": "squares15.jpg",
-    "title": "Tiny Triangle Houses",
-    "desc": "Handmade housing with a beautiful sunset in the back."
-  },
-  {
-    "key": "20",
-    "pid": "1",
-    "img": "squares16.jpg",
-    "title": "Carhenge",
-    "desc": "Another view of the sculpture known as Carhenge."
-  },
-  {
-    "key": "21",
-    "pid": "1",
-    "img": "squares17.jpg",
-    "title": "Squirrel Scouts",
-    "desc": "A close-up of a bicycle wheel with a squirrel on Carhenge."
   }
 ]
