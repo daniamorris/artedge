@@ -2,6 +2,8 @@
 
 Welcome. Art Edge is a socialFi Dapp that supports artists through education, inspiration, monetization, collaboration, and matchmaking with patrons. This is currently in development as an aplha release. Please check back in 2024 as additional features are added.
 
+View the project running live here: https://6pcc4-caaaa-aaaal-add5q-cai.icp0.io/
+
 To get started, you might want to explore the project directory structure and the default configuration file. Working with this project in your development environment will not affect any production deployment or identity tokens.
 
 To learn more before you start working with artedge, see the following documentation available online:
