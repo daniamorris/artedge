@@ -27,9 +27,23 @@ If you want to test your project locally, you can use the following commands:
 
 ```bash
 # Starts the replica, running in the background
-dfx start --background
+dfx start --clean --background
 
-# Deploys your canisters to the replica and generates your candid interface
+# Deploys your NFT canister with a collection
+dfx deploy dip721_nft --argument "(
+  principal\"$(dfx identity get-principal)\", 
+  record {
+    logo = record {
+      logo_type = \"logo/png\";
+      data = \"\";
+    };
+    name = \"My DIP721 Collection\";
+    symbol = \"PURP\";
+    maxLimit = 10;
+  }
+)"
+
+# Deploys the rest of your canisters to the replica and generates your candid interface
 dfx deploy
 ```
 
